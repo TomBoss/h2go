@@ -33,8 +33,8 @@ import (
 var doLogging = false
 
 type h2connInfo struct {
-	host     string
-	port     int
+	network  string
+	address  string
 	database string
 	username string
 	password string
@@ -95,14 +95,25 @@ func parseURL(dsnurl string) (h2connInfo, error) {
 		return ci, errors.Wrapf(err, "failed to parse connection url")
 	}
 	// Set host
-	if ci.host = u.Hostname(); len(ci.host) == 0 {
-		ci.host = "127.0.0.1"
+	if ci.network = u.Scheme; ci.network == "h2" {
+		ci.network = "tcp"
 	}
-	// Set port
-	ci.port, _ = strconv.Atoi(u.Port())
-	if ci.port == 0 {
-		ci.port = defaultH2port
+	if ci.network == "unix" {
+		ci.address = u.Path
+	} else {
+		var host string
+		var port int
+		if host = u.Hostname(); len(host) == 0 {
+			host = "127.0.0.1:"
+		}
+		// Set port
+		port, _ = strconv.Atoi(u.Port())
+		if port == 0 {
+			port = defaultH2port
+		}
+		ci.address = host + ":" + strconv.Itoa(port)
 	}
+
 	// Set database
 	if ci.database = u.Path; len(ci.database) == 0 {
 		ci.database = "~/test"
