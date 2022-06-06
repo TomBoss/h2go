@@ -17,7 +17,6 @@ limitations under the License.
 package h2go
 
 import (
-	"context"
 	"database/sql"
 	"database/sql/driver"
 
@@ -74,14 +73,10 @@ func (h2d *h2Driver) OpenConnector(dsn string) (driver.Connector, error) {
 	return &h2Connector{ci: ci, driver: *h2d}, nil
 }
 
-func (h2c *h2Connector) Connect(ctx context.Context) (driver.Conn, error) {
-	L(log.DebugLevel, "Connect")
-	return connect(h2c.ci)
-}
-
 func (h2c *h2Connector) Driver() driver.Driver {
 	return h2c.driver
 }
+
 func init() {
 	sql.Register("h2", &h2Driver{})
 }

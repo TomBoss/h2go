@@ -21,7 +21,7 @@ import (
 	"database/sql"
 	"log"
 
-	_ "github.com/jmrobles/h2go"
+	_ "github.com/TomBoss/h2go"
 )
 
 func main() {
