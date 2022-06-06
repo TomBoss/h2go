@@ -79,6 +79,7 @@ func (h2c *h2Connector) Driver() driver.Driver {
 }
 
 func init() {
+  log.SetLevel(log.TraceLevel)
   L(log.TraceLevel, "init Driver H2")
 	sql.Register("h2", &h2Driver{})
 }

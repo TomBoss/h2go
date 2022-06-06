@@ -91,7 +91,8 @@ func (c *h2client) doHandshake(ci h2connInfo) error {
 	if err != nil {
 		return errors.Wrapf(err, "H2 handshake: can't get H2 Server client version ack")
 	}
-	L(log.InfoLevel, "H2 server code: %d - client ver: %d", code, clientVer)
+	L(log.InfoLevel, "H2 Server Status Code: %d", code)
+	L(log.InfoLevel, "Client Version: %d", clientVer)
 	return nil
 }
 
