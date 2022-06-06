@@ -19,7 +19,7 @@ package h2go
 import (
 	"database/sql"
 	"database/sql/driver"
-
+  "context"
 	"net"
 	"net/url"
 	"strconv"
@@ -74,16 +74,24 @@ func (h2d *h2Driver) OpenConnector(dsn string) (driver.Connector, error) {
 }
 
 func (h2c *h2Connector) Driver() driver.Driver {
+  L(log.TraceLevel, "Driver H2")
 	return h2c.driver
 }
 
 func init() {
+  L(log.TraceLevel, "init Driver H2")
 	sql.Register("h2", &h2Driver{})
+}
+
+func (h2c *h2Connector) Connect(ctx context.Context) (driver.Conn, error) {
+	L(log.DebugLevel, "Connect")
+	return connect(h2c.ci)
 }
 
 // Helpers
 
 func parseURL(dsnurl string) (h2connInfo, error) {
+  L(log.TraceLevel, "parseURL: %s", dsnurl)
 	var ci h2connInfo
 	u, err := url.Parse(dsnurl)
 	if err != nil {

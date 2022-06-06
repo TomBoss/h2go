@@ -139,6 +139,7 @@ func (h2c *h2Conn) ExecContext(ctx context.Context, query string, args []driver.
 func connect(ci h2connInfo) (driver.Conn, error) {
 	var conn net.Conn
 	var err error
+	L(log.TraceLevel, "connect: %s:%s", ci.network, ci.address)
 	conn, err = ci.dialer.Dial(ci.network, ci.address)
 	if err != nil {
 		return nil, errors.Wrapf(err, "failed to open H2 connection")
